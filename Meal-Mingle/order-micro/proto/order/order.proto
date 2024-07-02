@@ -1,0 +1,92 @@
+syntax="proto3";
+package proto;
+
+option go_package = "./proto/order";
+import "google/api/annotations.proto";
+
+message OrderItem {
+    string orderItemName = 1;
+    int64 orderItemQuantity = 2;
+    int64 orderItemPrice = 3;
+}
+
+message AddOrderRequest {
+    repeated OrderItem orderItems = 1;
+    int64 orderTotalPrice = 2;
+    string restaurantName = 3;
+    string shippingAddress = 4;
+}
+message data {
+    repeated Order order = 1;
+}
+message CancelOrderData {
+    string orderId = 1;
+}
+message AddOrderResponse {
+    string message = 1;
+    string error = 2;
+    int64 statusCode = 3;
+    data data = 4;
+}
+message Order {
+    string orderId = 1;
+    repeated OrderItem orderItems = 2;
+    int64 orderTotalPrice = 3;
+    string restaurantName = 4;
+    string shippingAddress = 5;
+    string orderStatus=6;
+}
+message OrderHistoryRequest {}
+message OrderHistoryResponse {
+    data data = 1;
+    string message = 4;
+    string error = 5;
+    int64 statusCode = 6;
+}
+message CancelOrderRequest {
+    string orderId = 1;
+}
+message CancelOrderResponse {
+    CancelOrderData data = 1;
+    string message = 2;
+    string error = 3;
+    int64 statusCode = 4;
+}
+message ChangeOrderStatusRequest {
+    string orderId = 1;
+    string orderStatus = 2;
+}
+message ChangeOrderStatusResponseData {
+    string orderId = 1;
+    string orderStatus = 2;
+}
+message ChangeOrderStatusResponse {
+    ChangeOrderStatusResponseData data = 1;
+    string message = 2;
+    string error = 3;
+    int64 statusCode = 4;
+}
+service OrderService {
+   rpc AddOrder(AddOrderRequest) returns (AddOrderResponse){
+        option (google.api.http) = {
+            post: "/api/orders"
+            body: "*"
+        };
+   }
+    rpc OrderHistory(OrderHistoryRequest) returns (OrderHistoryResponse){
+        option (google.api.http) = {
+            get: "/api/orders"
+        };
+    }
+    rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse){
+        option (google.api.http) = {
+            delete: "/api/orders/{orderId}"
+        };
+    }
+    rpc ChangeOrderStatus(ChangeOrderStatusRequest) returns (ChangeOrderStatusResponse){
+        option (google.api.http) = {
+            patch: "/api/orders/{orderId}"
+            body: "*"
+        };
+    }
+}

@@ -1,0 +1,102 @@
+syntax="proto3";
+package userpb;
+option go_package = "./proto/user";
+
+import "google/api/annotations.proto";
+
+message user {
+    string userId = 1;
+    string userName = 2;
+    string userEmail = 3;
+    string userPhone = 4;
+}
+message Responsedata{
+    string token = 1;
+    user user = 2;
+}
+message AddUserRequest {
+    string userName = 1;
+    string userEmail = 2;
+    string userPhone = 3;
+    string userPassword = 4;
+    string userRole = 5;
+}
+message AddUserResponse {
+    Responsedata data = 1;
+    string message = 2;
+    string error = 3;
+    int64 statusCode = 4;
+}
+message AuthenticateUserRequest {
+    string userEmail = 1;
+    string userPassword = 2;
+    string role = 3;
+}
+message AuthenticateUserResponse {
+    string message = 1;
+    string error = 2;
+    int64 statusCode = 3;
+    Responsedata data = 4;
+}
+message AddOwnerDetailsRequest {
+    string accountNumber = 1;
+    string ifscCode = 2;
+    string bankName = 3;
+    string branchName = 4;
+    string panNumber = 5;
+    string adharNumber = 6;
+    string gstNumber = 7;
+}
+message AddOwnerDetailsResponseData {
+    string userId = 1;
+}
+message AddOwnerDetailsResponse {
+    AddOwnerDetailsResponseData data = 1;
+    string message = 2;
+    string error = 3;
+    int64 statusCode = 4;
+}
+message UpdateOwnerDetailsResponseData {
+    string userId = 1;
+}
+message UpdateOwnerDetailsRequest {
+    string accountNumber = 1;
+    string ifscCode = 2;
+    string bankName = 3;
+    string branchName = 4;
+    string panNumber = 5;
+    string adharNumber = 6;
+    string gstNumber = 7;
+}
+message UpdateOwnerDetailsResponse {
+    UpdateOwnerDetailsResponseData data = 1;
+    string message = 2;
+    string error = 3;
+    int64 statusCode = 4;
+}
+service UserService {
+    rpc AddUser(AddUserRequest) returns (AddUserResponse){
+        option (google.api.http) = {
+            post: "/api/users/register/{userRole}"
+            body: "*"
+        };
+    };
+    rpc AuthenticateUser(AuthenticateUserRequest) returns (AuthenticateUserResponse){
+        option (google.api.http) = {
+            post: "/api/users/login/{role}"
+            body: "*"
+        };
+    };
+    rpc AddOwnerDetails(AddOwnerDetailsRequest) returns (AddOwnerDetailsResponse){
+        option (google.api.http) = {
+            post: "/api/users/details"
+            body: "*"
+        };
+    };
+    rpc UpdateOwnerDetails(UpdateOwnerDetailsRequest) returns (UpdateOwnerDetailsResponse){
+        option (google.api.http) = {
+            put: "/api/users/details"
+            body: "*"
+        };
+    };
+}

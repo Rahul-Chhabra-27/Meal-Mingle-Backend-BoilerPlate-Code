@@ -1,0 +1,213 @@
+syntax="proto3";
+package proto;
+
+option go_package = "./proto/restaurant";
+import "google/api/annotations.proto";
+
+message Address {
+    string streetName = 1;
+    string pincode = 2;
+    string city = 3;
+    string country = 4;
+}
+message Restaurant {
+    string restaurantId = 1;
+    string restaurantName = 2;
+    Address restaurantAddress = 3;
+    string restaurantPhoneNumber = 4;
+    string restaurantAvailability = 5;
+    float  restaurantRating = 6;
+    string restaurantImageUrl =7;
+    string restaurantOwnerMail = 8;
+    string restaurantOperationDays =9;
+    string restaurantOperationHours =10;
+    int64 restaurantMinimumOrderAmount  = 11;
+    float restaurantDiscountPercentage = 12;
+}
+message RestaurantItem {
+    string restaurantItemId = 1;
+    string restaurantItemName = 2;
+    int64  restaurantItemPrice = 3;
+    string restaurantItemCategory = 4;
+    string restaurantItemCuisineType = 5;
+    string restaurantId = 6;
+    bool   restaurantItemVeg = 7;
+    string restaurantItemImageUrl = 8;
+}
+
+message AddRestaurantItemData {
+    string restaurantItemId = 1;
+    string restaurantItemName = 2;
+    int64  restaurantItemPrice = 3;
+    string restaurantItemCategory = 4;
+    string restaurantItemCuisineType = 5;
+    string restaurantName = 6;
+    bool   restaurantItemVeg = 7;
+    string restaurantItemImageUrl = 8;
+}
+message AddRestaurantResponseData {
+    Restaurant restaurant = 1;
+}
+message GetAllRestaurantsResponseData {
+    int64 totalRestaurants = 1;
+    repeated Restaurant restaurants = 2;
+}
+
+message AddRestaurantRequest {
+    Restaurant restaurant = 1;
+}
+
+message AddRestaurantResponse {
+    AddRestaurantResponseData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;
+}
+
+message UpdateRestaurantRequest {
+    Restaurant restaurant = 1;
+}
+message UpdateRestaurantData {
+    Restaurant restaurant = 1;
+}
+message UpdateRestaurantResponse {
+    UpdateRestaurantData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;
+}
+message AddRestaurantItemResponseData {
+    RestaurantItem restaurantItem = 1;
+}
+message AddRestaurantItemRequest {
+    AddRestaurantItemData restaurantItem = 1;
+}
+message AddRestaurantItemResponse {
+    AddRestaurantItemResponseData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;
+}
+message UpdateRestaurantItemResponseData {
+    RestaurantItem restaurantItem = 1;
+}
+message UpdateRestaurantItemRequest {
+    RestaurantItem restaurantItem = 1;
+}
+message UpdateRestaurantItemResponse {
+    UpdateRestaurantItemResponseData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;
+}
+message GetAllRestaurantItemsResponseData {
+    int64 totalRestaurantItems = 1;
+    repeated RestaurantItem restaurantItems = 2;
+}
+message GetAllRestaurantItemsRequest {
+    string restaurantId = 1;
+}
+message GetAllRestaurantItemsResponse {
+    GetAllRestaurantItemsResponseData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;   
+}
+message GetAllRestaurantsRequest {}
+
+message GetAllRestaurantsResponse {
+    GetAllRestaurantsResponseData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;
+}
+message DeleteRestaurantItemRequest {
+    string restaurantId = 1;
+    string restaurantItemId = 2;
+}
+message DeleteRestaurantItemResponseData {
+    string restaurantItemId = 1;
+}
+message DeleteRestaurantItemResponse {
+    DeleteRestaurantItemResponseData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;
+}
+message GetRestaurantsByCityRequest {
+    string city = 1;
+}
+message GetRestaurantsByCityResponseData {
+    repeated Restaurant restaurants = 1;
+    int64 totalRestaurants = 2;
+}
+message GetRestaurantsByCityResponse {
+    GetRestaurantsByCityResponseData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;
+}
+message GetRestaurantsByItemCategoryResponseData {
+    repeated Restaurant restaurants = 1;
+    int64 totalRestaurants = 2;
+}
+message GetRestaurantsByItemCategoryRequest {
+    string category = 1;
+}
+message GetRestaurantsByItemCategoryResponse {
+    GetRestaurantsByItemCategoryResponseData data = 1;
+    string message = 2;
+    int64 statusCode = 3;
+    string error = 4;
+}
+service RestaurantService {
+    rpc AddRestaurant(AddRestaurantRequest) returns (AddRestaurantResponse){
+        option (google.api.http) = {
+            post: "/api/restaurants"
+            body: "*"
+        };
+    }
+    rpc UpdateRestaurant(UpdateRestaurantRequest) returns (UpdateRestaurantResponse){
+        option (google.api.http) = {
+            put: "/api/restaurants/update"
+            body: "*"
+        };
+    }
+    rpc AddRestaurantItem(AddRestaurantItemRequest) returns (AddRestaurantItemResponse){
+        option (google.api.http) = {
+            post: "/api/restaurant/items/add"
+            body: "*"
+        };
+    }
+    rpc UpdateRestaurantItem(UpdateRestaurantItemRequest) returns (UpdateRestaurantItemResponse){
+        option (google.api.http) = {
+            put: "/api/restaurant/items/update"
+            body: "*"
+        };
+    }
+    rpc GetAllRestaurantItems(GetAllRestaurantItemsRequest) returns (GetAllRestaurantItemsResponse){
+        option (google.api.http) = {
+            get: "/api/restaurant/{restaurantId}/items"
+        };
+    }
+    rpc GetAllRestaurants(GetAllRestaurantsRequest) returns (GetAllRestaurantsResponse){
+        option (google.api.http) = {
+            get: "/api/restaurants"
+        };
+    }
+    rpc DeleteRestaurantItem(DeleteRestaurantItemRequest) returns (DeleteRestaurantItemResponse){
+        option (google.api.http) = {
+            delete:"/api/restaurants/{restaurantId}/items/{restaurantItemId}"
+        };
+    };
+    rpc GetRestaurantsByCity(GetRestaurantsByCityRequest) returns (GetRestaurantsByCityResponse){
+        option (google.api.http) = {
+            get: "/api/restaurants/city/{city}"
+        };
+    }
+    rpc GetRestaurantsByItemCategory(GetRestaurantsByItemCategoryRequest) returns (GetRestaurantsByItemCategoryResponse){
+        option (google.api.http) = {
+            get: "/api/restaurants/{category}"
+        };
+    }
+}
