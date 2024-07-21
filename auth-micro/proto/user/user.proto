@@ -68,8 +68,37 @@ message UpdateOwnerDetailsRequest {
     string adharNumber = 6;
     string gstNumber = 7;
 }
+message GetUserDetailsResponseData {
+    user user = 1;
+    string accountNumber = 2;
+    string ifscCode = 3;
+    string bankName = 4;
+    string branchName = 5;
+    string panNumber = 6;
+    string adharNumber = 7;
+    string gstNumber = 8;
+}
+message GetUserDetailsRequest {} 
+message GetUserDetailsResponse {
+    GetUserDetailsResponseData data = 1;
+    string message = 2;
+    string error = 3;
+    int64 statusCode = 4;
+}
 message UpdateOwnerDetailsResponse {
     UpdateOwnerDetailsResponseData data = 1;
+    string message = 2;
+    string error = 3;
+    int64 statusCode = 4;
+}
+message PhoneVerificationResponseData {
+    string phone = 1;
+}
+message PhoneVerificationRequest {
+    string phone = 1;
+}
+message PhoneVerificationResponse {
+    PhoneVerificationResponseData data = 1;
     string message = 2;
     string error = 3;
     int64 statusCode = 4;
@@ -96,6 +125,17 @@ service UserService {
     rpc UpdateOwnerDetails(UpdateOwnerDetailsRequest) returns (UpdateOwnerDetailsResponse){
         option (google.api.http) = {
             put: "/api/users/details"
+            body: "*"
+        };
+    };
+    rpc GetUserDetails(GetUserDetailsRequest) returns (GetUserDetailsResponse){
+        option (google.api.http) = {
+            get: "/api/users/details"
+        };
+    };
+    rpc PhoneVerification(PhoneVerificationRequest) returns (PhoneVerificationResponse){
+        option (google.api.http) = {
+            post: "/api/users/phone/verify"
             body: "*"
         };
     };
