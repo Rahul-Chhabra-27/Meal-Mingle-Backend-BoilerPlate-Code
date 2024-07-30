@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: Aec19cs047
+      MYSQL_DATABASE: test
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - my_network
+
+  auth-micro:
+    build:
+      context: ./auth-micro
+    environment:
+      MYSQL_HOST: database
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Aec19cs047
+      MYSQL_DATABASE: test
+      MYSQL_PORT: 3306
+    networks:
+      - my_network
+    ports:
+      - "8090:8090"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  order-micro:
+    build:
+      context: ./order-micro
+    environment:
+      MYSQL_HOST: database
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Aec19cs047
+      MYSQL_DATABASE: test
+      MYSQL_PORT: 3306
+    networks:
+      - my_network
+    ports:
+      - "8093:8093" 
+      - "8089:8089"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  restaurant-micro:
+    build:
+      context: ./restaurant-micro
+    environment:
+      MYSQL_HOST: database
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Aec19cs047
+      MYSQL_DATABASE: test
+      MYSQL_PORT: 3306
+    networks:
+      - my_network
+    ports:
+      - "8091:8091"
+    depends_on:
+      database:
+        condition: service_healthy
+
+volumes:
+  mysql-data:
+
+networks:
+  my_network:
+    driver: bridge
