@@ -4,7 +4,7 @@ services:
   database:
     image: mysql:8
     environment:
-      MYSQL_ROOT_PASSWORD: Aec19cs047
+      MYSQL_ROOT_PASSWORD: <password>
       MYSQL_DATABASE: test
     volumes:
       - mysql-data:/var/lib/mysql
@@ -24,7 +24,7 @@ services:
     environment:
       MYSQL_HOST: database
       MYSQL_USER: root
-      MYSQL_PASSWORD: Aec19cs047
+      MYSQL_PASSWORD: <password>
       MYSQL_DATABASE: test
       MYSQL_PORT: 3306
     networks:
@@ -41,7 +41,7 @@ services:
     environment:
       MYSQL_HOST: database
       MYSQL_USER: root
-      MYSQL_PASSWORD: Aec19cs047
+      MYSQL_PASSWORD: <password>
       MYSQL_DATABASE: test
       MYSQL_PORT: 3306
     networks:
@@ -59,7 +59,7 @@ services:
     environment:
       MYSQL_HOST: database
       MYSQL_USER: root
-      MYSQL_PASSWORD: Aec19cs047
+      MYSQL_PASSWORD: <password>
       MYSQL_DATABASE: test
       MYSQL_PORT: 3306
     networks:
